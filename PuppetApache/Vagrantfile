@@ -1,0 +1,27 @@
+$script = <<-SCRIPT
+  wget https://apt.puppetlabs.com/puppet6-release-bionic.deb
+  sudo dpkg -i puppet6-release-bionic.deb
+  sudo apt-get update
+  sudo apt-get install -y puppet-agent
+SCRIPT
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "PuppetApache" do |apacheVM|
+    apacheVM.vm.box = "ubuntu/bionic64"
+
+    apacheVM.vm.network "private_network", ip: "192.168.33.10"
+    apacheVM.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.name = "PuppetApache"
+    end
+
+    apacheVM.vm.provision "shell", inline: $script
+
+    apacheVM.vm.provision "puppet" do |puppet|
+      puppet.module_path = "modules"          #Default values --> defines the path to the modules path
+      puppet.manifests_path = "manifests"     #Default values --> he path to the directory which contains the manifest files
+      puppet.manifest_file = "default.pp"     #Default values --> The name of the manifest file that will serve as the entrypoint for the Puppet run 
+    end
+  end
+end
