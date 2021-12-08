@@ -1,6 +1,6 @@
 
 $document_root = "/vagrant"
-
+$initial_path = "${document_root}/wordpress/"
 include mysql
 include apache
 include php
@@ -13,3 +13,12 @@ exec { 'apt-update':
 
 #Relacion de dependencia --> Para todo paquete a instalar, se ha tenido que ejecutar el recurso anterior
 Exec['apt-update'] -> Package <| |>
+Exec['apt-update'] -> Service <| |>
+
+package { 'wget':
+  ensure  => present,
+}
+
+package { 'tar':
+  ensure  => present,
+}

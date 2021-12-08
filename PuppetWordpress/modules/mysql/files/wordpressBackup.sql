@@ -18,6 +18,8 @@
 --
 -- Table structure for table `wp_commentmeta`
 --
+CREATE DATABASE IF NOT EXISTS wordpress;
+Use wordpress;
 
 DROP TABLE IF EXISTS `wp_commentmeta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

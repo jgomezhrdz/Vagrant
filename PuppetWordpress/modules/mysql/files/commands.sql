@@ -1,3 +1,3 @@
 CREATE USER IF NOT EXISTS 'username'@'localhost' IDENTIFIED BY 'actividadPuppetPassword';
-CREATE DATABASE wordpress;
+CREATE DATABASE IF NOT EXISTS wordpress;
 GRANT ALL ON *.* to 'username'@'localhost';
