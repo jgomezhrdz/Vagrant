@@ -1,16 +1,32 @@
-$scipt = <<-SHELL
+$document_root = "/vagrant"
+$script = <<-SHELL
+  wget https://apt.puppetlabs.com/puppet6-release-bionic.deb
+  sudo dpkg -i puppet6-release-bionic.deb
+  sudo apt-get update
+  sudo apt-get install -y puppet-agent
+SHELL
 
-
+$modulos = <<-SHELL
+  puppet module install --modulepath modules puppetlabs/mysql
 SHELL
 
 Vagrant.configure("2") do |config|
   config.vm.define "WordPressVM" do |wordPress|
     wordPress.vm.box = "ubuntu/bionic64"
-    wordPress.vm.network "private_network", ip: "192.168.33.10"
+    wordPress.vm.network "private_network", ip: "192.168.0.10"
+    wordPress.ssh.insert_key = false
     wordPress.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.name = "WordPressVM"
     end
+
+    wordPress.vm.provision "shell", inline: $script
+
+    wordPress.vm.provision "puppet" do |puppet|
+      puppet.module_path = "modules" # Default
+      puppet.manifests_path = "manifests" # Default
+      puppet.manifest_file = "default.pp" # Default
+    end
   end
-    #wordPress.vm.provision "puppet" do |puppet|
+    
 end
