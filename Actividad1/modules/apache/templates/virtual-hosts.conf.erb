@@ -1,0 +1,9 @@
+<VirtualHost *:80 *:8080>
+ServerAdmin webmaster@localhost
+DocumentRoot <%= @initial_path %>
+<Directory <%= @document_root %>>
+Require all granted
+</Directory>
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
